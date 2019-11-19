@@ -38,5 +38,7 @@ public class Associe {
 		this.name = name;
 	}
 	
-	
+	public String toString() {
+		return ("name : " +  name + " id : " + id); 
+	}
 }

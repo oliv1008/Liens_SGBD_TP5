@@ -54,4 +54,8 @@ public class Livre {
 	public void setAuthor(String author) {
 		this.author = author;
 	}
+	
+	public String toString() {
+		return ("name : " +  name + " by : " + author + " isbn : " + isbn); 
+	}
 }
