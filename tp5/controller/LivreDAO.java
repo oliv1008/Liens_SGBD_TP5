@@ -33,6 +33,7 @@ public class LivreDAO {
 		catch(SQLException e) {
 			System.err.println("Impossible de se connecter au serveur SQL");
 			e.printStackTrace();
+			System.exit(1);
 		}
 	}
 
@@ -44,7 +45,7 @@ public class LivreDAO {
 	 * @param name 
 	 * @param author
 	 */
-	public void insertBook(int isbn, String name, String author) {
+	public void insertBook(int isbn, String name, String author) throws Exception {
 		try {
 			s = con.prepareStatement("INSERT INTO Book (isbn, name, author) VALUES (?, ?, ?)");
 			s.setInt(1, isbn);
@@ -54,7 +55,7 @@ public class LivreDAO {
 			s.close();
 			System.out.println("Ajout d'un livre à la BDD");
 		} catch(SQLIntegrityConstraintViolationException e) {
-			System.err.println("Ce livre (" + isbn + ") est déjà dans la bibliothèque");
+			throw new Exception("Ce livre (" + isbn + ") est déjà dans la bibliothèque");
 		} catch(SQLException e) {
 			e.printStackTrace();
 		}

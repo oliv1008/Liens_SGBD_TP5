@@ -29,6 +29,7 @@ public class LivreCopieDAO {
 		catch(SQLException e) {
 			System.err.println("Impossible de se connecter au serveur SQL");
 			e.printStackTrace();
+			System.exit(1);
 		}
 	}
 
@@ -38,9 +39,9 @@ public class LivreCopieDAO {
 	 * Ajoute une copie d'un livre à la bibliothèque
 	 * @param isbn l'isbn du livre à ajouter
 	 */
-	public void insertBookCopy(int isbn) {
+	public void insertBookCopy(int isbn) throws Exception {
 		if(!(new PretDAO().isbnExist(isbn))) {
-			System.err.println("Cet isbn ("+isbn+") n'existe pas");
+			throw new Exception("Cet isbn ("+isbn+") n'existe pas dans le catalogue");
 		}
 		else {
 			try {
@@ -62,7 +63,7 @@ public class LivreCopieDAO {
 	 */
 	public void removeBookCopy(int isbn) throws Exception {
 		if(!(new PretDAO().isbnExist(isbn))) {
-			System.err.println("Cet isbn ("+isbn+") n'existe pas");
+			System.err.println("Cet isbn ("+isbn+") n'existe pas dans le catalogue");
 		}
 		else {
 			try {

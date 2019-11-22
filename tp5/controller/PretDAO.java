@@ -6,7 +6,6 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.SQLIntegrityConstraintViolationException;
 
 public class PretDAO {
 
@@ -31,23 +30,24 @@ public class PretDAO {
 		catch(SQLException e) {
 			System.err.println("Impossible de se connecter au serveur SQL");
 			e.printStackTrace();
+			System.exit(1);
 		}
 	}
 
 	/*===== METHODS =====*/
-	
+
 	/**
 	 * Méthode pour "emprunter un livre"
 	 * @param userId l'id de l'utilisateur empruntant le livre
 	 * @param isbn l'isbn du livre emprunté
 	 * @param dateLoan la date d'emprunt
 	 */
-	public void loanBook(int userId, int isbn, Date dateLoan) {
+	public void loanBook(int userId, int isbn, Date dateLoan) throws Exception {
 		if(!idExist(userId)){
-			System.err.println("Cet userId ("+userId+") n'existe pas");
+			throw new Exception("Cet userId ("+userId+") n'existe pas");
 		}
 		else if(!isbnExist(isbn)) {
-			System.err.println("Cet isbn ("+isbn+") n'existe pas");
+			throw new Exception("Cet isbn ("+isbn+") n'existe pas");
 		}
 
 		else {
@@ -67,7 +67,7 @@ public class PretDAO {
 					e.printStackTrace();
 				}
 			} catch(Exception e) {
-				System.err.println("Ce livre ("+isbn+") n'est plus disponible en rayon");
+				throw new Exception("Ce livre ("+isbn+") n'est plus disponible en rayon");
 			}
 		}	
 	}
@@ -78,13 +78,13 @@ public class PretDAO {
 	 * @param isbn l'isbn du livre emprunté
 	 * @param dateReturn la date de retour
 	 */
-	public void returnBook(int userId, int isbn, Date dateReturn) {
+	public void returnBook(int userId, int isbn, Date dateReturn) throws Exception {
 		Date dateLoan = getDateLoanByIdAndIsbn(userId, isbn);
 		if(dateLoan == null){
-			System.err.println("Ce livre ("+isbn+") n'a pas été emprunté par cet utilisateur ("+userId+")");
+			throw new Exception("Ce livre ("+isbn+") n'a pas été emprunté par cet utilisateur ("+userId+")");
 		}
 		else if(dateLoan.getTime() > dateReturn.getTime()) {
-			System.err.println("La date de retour que vous avez spécifiée est AVANT la date d'emprunt ("+dateLoan.toString()+")");
+			throw new Exception("La date de retour que vous avez spécifiée est AVANT la date d'emprunt ("+dateLoan.toString()+")");
 		}
 		else {
 			try {
@@ -99,25 +99,17 @@ public class PretDAO {
 					result.updateRow();
 				}
 
-				LivreCopieDAO lcDAO = new LivreCopieDAO();
-				lcDAO.insertBookCopy(isbn);
+				try {
+					LivreCopieDAO lcDAO = new LivreCopieDAO();
+					lcDAO.insertBookCopy(isbn);
+				} catch(Exception e) {
+					throw new Exception(e.getMessage());
+				}
 
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
 		}
-	}
-
-	/**
-	 * Ajoute directement un emprunt (date d'emprunt + date de retour) à la BDD
-	 * @param userId
-	 * @param isbn
-	 * @param dateLoan
-	 * @param dateReturn
-	 */
-	public void insertLoan(int userId, int isbn, Date dateLoan, Date dateReturn) {
-		loanBook(userId, isbn, dateLoan);
-		returnBook(userId, isbn, dateReturn);
 	}
 
 	/**

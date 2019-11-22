@@ -8,7 +8,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import model.Associe;
-import model.Livre;
 
 public class AssocieDAO {
 
@@ -33,6 +32,7 @@ public class AssocieDAO {
 		catch(SQLException e) {
 			System.err.println("Impossible de se connecter au serveur SQL");
 			e.printStackTrace();
+			System.exit(1);
 		}
 	}
 
@@ -41,6 +41,7 @@ public class AssocieDAO {
 	/**
 	 * Ajoute un utilisateur à la BDD
 	 * @param name le nom de l'utilisateur
+	 * @warning 2 utilisateurs ne peuvent pas avoir le même non
 	 */
 	public void insertUser(String name) {
 		try {

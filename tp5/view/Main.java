@@ -17,7 +17,7 @@ public class Main {
 		AssocieDAO associeDao = new AssocieDAO();
 		PretDAO pretDao = new PretDAO();
 		LivreCopieDAO livreCopieDAO = new LivreCopieDAO();
-		
+
 		Scanner sc = new Scanner(System.in);
 		String choice = "0";
 
@@ -31,7 +31,7 @@ public class Main {
 				System.out.println("[2] Gestion des livres");
 				System.out.println("[3] Gestion des copies");
 				System.out.println("[4] Gestion des prêts");
-				System.out.println("[0] Quitter l'application");
+				System.out.println("[x] Quitter l'application");
 				System.out.print("Votre choix ? > ");
 				choice = sc.nextLine();
 			}
@@ -80,7 +80,15 @@ public class Main {
 					String name = sc.nextLine();
 					System.out.print("Auteur : ");
 					String author = sc.nextLine();
-					livreDao.insertBook(isbn, name, author);
+
+					try {
+						livreDao.insertBook(isbn, name, author);
+					} catch(Exception e) {
+						System.err.println(e.getMessage());
+						System.out.println("### Appuyez sur ENTRER pour revenir au menu");
+						sc.nextLine();
+					}
+
 					choice = "2";
 				}
 				//-------------------- SUPPRESSION LIVRE --------------------
@@ -88,7 +96,9 @@ public class Main {
 					clearScreen();
 					System.out.print("ISBN : ");
 					int isbn = Integer.parseInt(sc.nextLine());
+
 					livreDao.deleteBook(isbn);
+
 					choice = "2";
 				}
 				//-------------------- LISTE LIVRES --------------------
@@ -117,7 +127,15 @@ public class Main {
 					clearScreen();
 					System.out.print("ISBN : ");
 					int isbn = Integer.parseInt(sc.nextLine());
-					livreCopieDAO.insertBookCopy(isbn);
+
+					try {
+						livreCopieDAO.insertBookCopy(isbn);
+					} catch(Exception e) {
+						System.err.println(e.getMessage());
+						System.out.println("### Appuyez sur ENTRER pour revenir au menu");
+						sc.nextLine();
+					}
+
 					choice = "3";
 				}
 				//-------------------- SUPPRESSION COPIE --------------------
@@ -125,11 +143,15 @@ public class Main {
 					clearScreen();
 					System.out.print("ISBN : ");
 					int isbn = Integer.parseInt(sc.nextLine());
+
 					try {
 						livreCopieDAO.removeBookCopy(isbn);
 					} catch (Exception e) {
-						System.out.println(e.getMessage());
+						System.err.println(e.getMessage());
+						System.out.println("### Appuyez sur ENTRER pour revenir au menu");
+						sc.nextLine();
 					}
+
 					choice = "3";
 				}
 			}
@@ -155,7 +177,15 @@ public class Main {
 					int month = Integer.parseInt(sc.nextLine());
 					System.out.print("Année : ");
 					int year = Integer.parseInt(sc.nextLine());
-					pretDao.loanBook(userId, isbn, new Date(year-1900, month, day));
+
+					try {
+						pretDao.loanBook(userId, isbn, new Date(year-1900, month, day));
+					} catch(Exception e) {
+						System.err.println(e.getMessage());
+						System.out.println("### Appuyez sur ENTRER pour revenir au menu");
+						sc.nextLine();
+					}
+
 					choice = "4";
 				}
 				//-------------------- RETOUR LIVRE --------------------
@@ -171,14 +201,26 @@ public class Main {
 					int month = Integer.parseInt(sc.nextLine());
 					System.out.print("Année : ");
 					int year = Integer.parseInt(sc.nextLine());
-					pretDao.returnBook(userId, isbn, new Date(year-1900, month, day));
+
+					try {
+						pretDao.returnBook(userId, isbn, new Date(year-1900, month, day));
+					} catch(Exception e) {
+						System.err.println(e.getMessage());
+						System.out.println("### Appuyez sur ENTRER pour revenir au menu");
+						sc.nextLine();
+					}
+
 					choice = "4";
 				}
 			}
-			
+			if(choice.equals("x")) {
+				System.out.println("\nFermeture de l'application...");
+				System.exit(1);
+			}
+
 		}
 	}
-	
+
 	public static void clearScreen() {  
 		for(int i=0; i<20; i++) {
 			System.out.println("");
