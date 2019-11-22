@@ -59,6 +59,21 @@ public class LivreDAO {
 			e.printStackTrace();
 		}
 	}
+	
+	/**
+	 * Supprime un livre de la BDD
+	 * @param isbn l'isbn du livre
+	 */
+	public void deleteBook(int isbn) {
+		try {
+			s = con.prepareStatement("DELETE FROM Book WHERE isbn = " + isbn);
+			s.executeUpdate();
+			s.close();
+			System.out.println("Suppression d'un livre de la BDD");
+		} catch(SQLException e) {
+			e.printStackTrace();
+		}
+	}
 
 	/**
 	 * Méthode pour récupérer un livre à partir de son nom

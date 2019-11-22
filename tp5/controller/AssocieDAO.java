@@ -53,6 +53,21 @@ public class AssocieDAO {
 			e.printStackTrace();
 		}
 	}
+	
+	/**
+	 * Supprime un utilisateur de la BDD
+	 * @param name le nom de l'utilisateur
+	 */
+	public void deleteUser(String name) {
+		try {
+			s = con.prepareStatement("DELETE FROM User WHERE name = '" + name + "'");
+			s.executeUpdate();
+			s.close();
+			System.out.println("Suppression d'un utilisateur à la BDD");
+		} catch(SQLException e) {
+			e.printStackTrace();
+		}
+	}
 
 	/**
 	 * Méthode pour récupérer un utilisateur à partir de son nom

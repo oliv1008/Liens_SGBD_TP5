@@ -63,8 +63,6 @@ public class PretDAO {
 					s.executeUpdate();
 					s.close();
 					System.out.println("Ajout d'un pret à la BDD");
-				} catch(SQLIntegrityConstraintViolationException e) {
-					System.err.println("Ce livre (isbn #" + isbn + ") est déjà dans la bibliothèque");
 				} catch(SQLException e) {
 					e.printStackTrace();
 				}

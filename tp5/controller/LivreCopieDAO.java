@@ -44,7 +44,7 @@ public class LivreCopieDAO {
 		}
 		else {
 			try {
-				s = con.prepareStatement("INSERT INTO BookCopy (isbn) VALUES (?)");
+				s = con.prepareStatement("INSERT INTO Copy (isbn) VALUES (?)");
 				s.setInt(1, isbn);
 				s.executeUpdate();
 				s.close();
@@ -66,20 +66,20 @@ public class LivreCopieDAO {
 		}
 		else {
 			try {
-				s = con.prepareStatement("SELECT idCopy FROM BookCopy WHERE isbn = " + isbn);
+				s = con.prepareStatement("SELECT id FROM Copy WHERE isbn = " + isbn);
 				ResultSet result = s.executeQuery();
 
 				int idCopyToDelete = -1;
 
 				while(result.next()){         
-					idCopyToDelete = result.getInt("idCopy");
+					idCopyToDelete = result.getInt("id");
 				}
 
 				if(idCopyToDelete == -1) {
 					throw new Exception("Il n'existe plus de copies de ce livre ("+isbn+")");
 				}
 				else {
-					s = con.prepareStatement("DELETE FROM BookCopy WHERE isbn = " + isbn + " AND idCopy = " + idCopyToDelete);
+					s = con.prepareStatement("DELETE FROM Copy WHERE isbn = " + isbn + " AND id = " + idCopyToDelete);
 					s.executeUpdate();
 				}
 
