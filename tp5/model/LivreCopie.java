@@ -39,4 +39,8 @@ public class LivreCopie {
 	public void setIdCopy(int idCopy) {
 		this.idCopy = idCopy;
 	}
+	
+	public String toString() {
+		return ("isbn : " +  isbn + " idCopy : " + idCopy); 
+	}
 }

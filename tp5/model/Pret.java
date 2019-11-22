@@ -71,4 +71,8 @@ public class Pret {
 	public void setIsbn(int isbn) {
 		this.isbn = isbn;
 	}
+	
+	public String toString() {
+		return ("idAssocie : " +  idAssocie + " isbn : " + isbn + " dateEmprunt : " + dateEmprunt + " dateRetour : " + dateRetour); 
+	}
 }
